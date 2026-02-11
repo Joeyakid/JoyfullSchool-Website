@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { mockDB } from '@/lib/mock-db';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-    const announcements = mockDB.getCourseAnnouncements(params.id);
+    const announcements = mockDB.getAnnouncements(params.id);
     return NextResponse.json(announcements);
 }
 
@@ -27,11 +27,34 @@ export async function POST(request: Request, { params }: { params: { id: string 
     return NextResponse.json(newAnnouncement);
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(
+    request: Request,
+    { params }: { params: { id: string } }
+) {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-    if (!id) return NextResponse.json({ message: "ID required" }, { status: 400 });
+    const announcementId = searchParams.get('id');
 
-    mockDB.deleteStudentAnnouncement(id);
-    return NextResponse.json({ message: "Deleted" });
+    if (!announcementId) {
+        return NextResponse.json(
+            { message: "Announcement ID required" },
+            { status: 400 }
+        );
+    }
+
+    mockDB.deleteStudentAnnouncement(announcementId);
+
+    return NextResponse.json({
+        message: "Deleted",
+        courseId: params.id
+    });
 }
+
+
+// export async function DELETE(request: Request) {
+//     const { searchParams } = new URL(request.url);
+//     const id = searchParams.get('id');
+//     if (!id) return NextResponse.json({ message: "ID required" }, { status: 400 });
+
+//     mockDB.deleteStudentAnnouncement(id);
+//     return NextResponse.json({ message: "Deleted" });
+// }
