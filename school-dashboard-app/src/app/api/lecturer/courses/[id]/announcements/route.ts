@@ -1,53 +1,122 @@
 import { NextResponse } from 'next/server';
 import { mockDB } from '@/lib/mock-db';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-    const announcements = mockDB.getAnnouncements(params.id);
-    return NextResponse.json(announcements);
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+
+  const announcements = mockDB.getAnnouncements(id);
+  return NextResponse.json(announcements);
 }
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
-    const body = await request.json();
-    const { title, content, author } = body;
+// export async function GET(request: Request, { params }: { params: { id: string } }) {
+//     const announcements = mockDB.getAnnouncements(params.id);
+//     return NextResponse.json(announcements);
+// }
 
-    if (!title || !content) {
-        return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
-    }
 
-    const newAnnouncement = {
-        id: `ca${Math.random().toString(36).substr(2, 9)}`,
-        title,
-        content,
-        date: new Date().toISOString().split('T')[0],
-        author: author || 'Lecturer',
-        courseId: params.id
-    };
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
 
-    mockDB.addStudentAnnouncement(newAnnouncement);
-    return NextResponse.json(newAnnouncement);
+  const body = await request.json();
+  const { title, content, author } = body;
+
+  if (!title || !content) {
+    return NextResponse.json(
+      { message: "Missing required fields" },
+      { status: 400 }
+    );
+  }
+
+  const newAnnouncement = {
+    id: `ca${Math.random().toString(36).substring(2, 9)}`,
+    title,
+    content,
+    date: new Date().toISOString().split("T")[0],
+    author: author || "Lecturer",
+    courseId: id,
+  };
+
+  mockDB.addStudentAnnouncement(newAnnouncement);
+  return NextResponse.json(newAnnouncement);
 }
+
+
+// export async function POST(request: Request, { params }: { params: { id: string } }) {
+//     const body = await request.json();
+//     const { title, content, author } = body;
+
+//     if (!title || !content) {
+//         return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+//     }
+
+//     const newAnnouncement = {
+//         id: `ca${Math.random().toString(36).substr(2, 9)}`,
+//         title,
+//         content,
+//         date: new Date().toISOString().split('T')[0],
+//         author: author || 'Lecturer',
+//         courseId: params.id
+//     };
+
+//     mockDB.addStudentAnnouncement(newAnnouncement);
+//     return NextResponse.json(newAnnouncement);
+// }
+
+
 
 export async function DELETE(
-    request: Request,
-    { params }: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-    const { searchParams } = new URL(request.url);
-    const announcementId = searchParams.get('id');
+  const { id } = await params;
 
-    if (!announcementId) {
-        return NextResponse.json(
-            { message: "Announcement ID required" },
-            { status: 400 }
-        );
-    }
+  const { searchParams } = new URL(request.url);
+  const announcementId = searchParams.get("id");
 
-    mockDB.deleteStudentAnnouncement(announcementId);
+  if (!announcementId) {
+    return NextResponse.json(
+      { message: "Announcement ID required" },
+      { status: 400 }
+    );
+  }
 
-    return NextResponse.json({
-        message: "Deleted",
-        courseId: params.id
-    });
+  mockDB.deleteStudentAnnouncement(announcementId);
+
+  return NextResponse.json({
+    message: "Deleted",
+    courseId: id,
+  });
 }
+
+
+// export async function DELETE(
+//     request: Request,
+//     { params }: { params: { id: string } }
+// ) {
+//     const { searchParams } = new URL(request.url);
+//     const announcementId = searchParams.get('id');
+
+//     if (!announcementId) {
+//         return NextResponse.json(
+//             { message: "Announcement ID required" },
+//             { status: 400 }
+//         );
+//     }
+
+//     mockDB.deleteStudentAnnouncement(announcementId);
+
+//     return NextResponse.json({
+//         message: "Deleted",
+//         courseId: params.id
+//     });
+// }
 
 
 // export async function DELETE(request: Request) {
