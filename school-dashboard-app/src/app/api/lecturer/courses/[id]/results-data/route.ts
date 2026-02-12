@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { mockDB } from '@/lib/mock-db';
 
-export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, context: { params: any }) {
     const { id } = await context.params;
     const courseId = id;
 
@@ -25,7 +25,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     });
 }
 
-export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
+export async function POST(request: Request, context: { params: any }) {
     const { id } = await context.params;
     const courseId = id;
     const { results } = await request.json(); // Array of { studentId, score }

@@ -3,7 +3,7 @@ import { mockDB } from '@/lib/mock-db';
 
 export async function GET(
     request: Request,
-    context: { params: Promise<{ id: string }> }
+    context: { params: any }
 ) {
     const { id } = await context.params;
     const course = mockDB.getAllCourses().find(c => c.id === id);

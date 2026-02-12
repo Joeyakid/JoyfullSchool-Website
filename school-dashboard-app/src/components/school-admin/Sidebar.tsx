@@ -5,7 +5,8 @@ import {
     GraduationCap,
     Bell,
     LogOut,
-    School
+    School,
+    Briefcase
 } from 'lucide-react';
 
 interface SidebarProps {

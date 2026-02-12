@@ -3,7 +3,7 @@ import { mockDB } from '@/lib/mock-db';
 
 export async function GET(
     request: Request,
-    context: { params: Promise<{ id: string }> }
+    context: { params: any }
 ) {
     const { id } = await context.params;
     const assignments = mockDB.getCourseAssignments(id);
@@ -12,7 +12,7 @@ export async function GET(
 
 export async function POST(
     request: Request,
-    context: { params: Promise<{ id: string }> }
+    context: { params: any }
 ) {
     const { id } = await context.params;
     const body = await request.json();

@@ -3,7 +3,7 @@ import { mockDB } from '@/lib/mock-db';
 
 export async function GET(
   request: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: any }
 ) {
   const { id } = await context.params;
 
@@ -15,7 +15,7 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: any }
 ) {
   const { id } = await context.params;
 
@@ -44,7 +44,7 @@ export async function POST(
 
 export async function DELETE(
   request: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: any }
 ) {
   const { id } = await context.params;
 
