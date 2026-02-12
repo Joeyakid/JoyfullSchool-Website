@@ -1,18 +1,26 @@
 import { NextResponse } from 'next/server';
 import { mockDB } from '@/lib/mock-db';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-    const posts = mockDB.getCourseForumPosts(params.id);
+export async function GET(
+    request: Request,
+    context: { params: Promise<{ id: string }> }
+) {
+    const { id } = await context.params;
+    const posts = mockDB.getCourseForumPosts(id);
     return NextResponse.json(posts);
 }
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(
+    request: Request,
+    context: { params: Promise<{ id: string }> }
+) {
+    const { id } = await context.params;
     const body = await request.json();
     const { title, content, authorName, authorId } = body;
 
     const newPost = {
         id: `fp${Math.random().toString(36).substr(2, 9)}`,
-        courseId: params.id,
+        courseId: id,
         authorId: authorId || 'lecturer',
         authorName: authorName || 'Lecturer',
         title,

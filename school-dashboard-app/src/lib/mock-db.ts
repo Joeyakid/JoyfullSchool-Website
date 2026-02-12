@@ -126,6 +126,22 @@ export type InternalAnnouncement = {
     author: string;
 };
 
+export type Survey = {
+    id: string;
+    title: string;
+    description: string;
+    type: 'general' | 'best-teacher';
+    options?: string[]; // For general MCQs
+    isActive: boolean;
+};
+
+export type Vote = {
+    id: string;
+    surveyId: string;
+    voterId: string; // Hashed or anonymous tracking
+    choice: string; // Option or Teacher ID
+};
+
 // Initial Mock Data
 const INITIAL_USERS: User[] = [
     {
@@ -357,6 +373,26 @@ class MockDB {
 
     getForumComments(postId: string) {
         return this.forumComments.filter(c => c.postId === postId);
+    }
+
+    private surveys: Survey[] = [
+        { id: 's1', title: 'Campus Facility Feedback', description: 'Rate the new cafeteria.', type: 'general', options: ['Excellent', 'Good', 'Poor'], isActive: true },
+        { id: 's2', title: 'Teacher of the Year', description: 'Vote for the best lecturer.', type: 'best-teacher', isActive: true }
+    ];
+    private votes: Vote[] = [];
+
+    getSurveys() {
+        return this.surveys.filter(s => s.isActive);
+    }
+
+    castVote(vote: Vote) {
+        // Prevent double voting logic can be added here
+        this.votes.push(vote);
+        return vote;
+    }
+
+    getVotes(surveyId: string) {
+        return this.votes.filter(v => v.surveyId === surveyId);
     }
 
     getStudentData(userId: string) {

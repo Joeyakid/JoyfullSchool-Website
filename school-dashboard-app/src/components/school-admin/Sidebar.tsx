@@ -21,6 +21,7 @@ export default function Sidebar({ activeView, setActiveView, onLogout }: Sidebar
         { id: 'courses', label: 'Courses', icon: BookOpen },
         { id: 'enrollments', label: 'Enrollments', icon: GraduationCap },
         { id: 'announcements', label: 'Announcements', icon: Bell },
+        { id: 'staff-requests', label: 'Staff Requests', icon: Briefcase },
     ];
 
     return (
@@ -38,8 +39,8 @@ export default function Sidebar({ activeView, setActiveView, onLogout }: Sidebar
                         key={item.id}
                         onClick={() => setActiveView(item.id)}
                         className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-colors ${activeView === item.id
-                                ? 'bg-orange-50 text-orange-700'
-                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                            ? 'bg-orange-50 text-orange-700'
+                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                             }`}
                     >
                         <item.icon className={`w-5 h-5 ${activeView === item.id ? 'text-orange-600' : 'text-gray-400'}`} />

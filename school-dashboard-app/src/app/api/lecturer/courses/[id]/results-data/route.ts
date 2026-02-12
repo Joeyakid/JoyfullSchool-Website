@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { mockDB } from '@/lib/mock-db';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
-    const params = await context.params;
-    const courseId = params.id;
+    const { id } = await context.params;
+    const courseId = id;
 
     // 1. Get Enrollments
     // We need to fetch students who are enrolled in this course
@@ -26,8 +26,8 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
 }
 
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
-    const params = await context.params;
-    const courseId = params.id;
+    const { id } = await context.params;
+    const courseId = id;
     const { results } = await request.json(); // Array of { studentId, score }
 
     if (!Array.isArray(results)) {
